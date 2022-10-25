@@ -11,11 +11,9 @@ class Control():
         self.clock = pygame.time.Clock()
         self.FPS = 120
         self.display = pygame.display.set_mode([1024, 768])
-        self.menu_loop()
-        fantasma = Fantasma(50,50,0,[40,50])
-        '''criar player
-        criar sprites
-        '''
+        self.fantasma = Fantasma(50,50,30,[400,500])
+        self.game_loop()
+
         
     def menu_loop(self):
         menuLoop = True
@@ -30,10 +28,19 @@ class Control():
 
             pygame.display.update()
     def game_loop(self):
-        gameLoop = True
+        gameLoop = True 
         while gameLoop:
+            self.clock.tick(self.FPS)  
+
+            self.display.fill((0, 0, 0))
+
+            self.display.blit(self.fantasma.getsprite(),(self.fantasma.posInicial[0],self.fantasma.posInicial[1]))
+
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:     
+
+                if event.type == pygame.QUIT:
+                    gameLoop = False
+                if event.type == pygame.KEY:     
                     if event.key == pygame.K_d:
                         self.fantasma.movDireita()
                     if event.key == pygame.K_a:
@@ -42,6 +49,7 @@ class Control():
                         self.fantasma.movCima()
                     if event.key == pygame.K_s:
                         self.fantasma.movBaixo()
+            pygame.display.update()
 
 
 x=Control()
