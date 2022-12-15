@@ -19,7 +19,7 @@ class Control():
         self.black = (0,0,0)
         self.white=(255,255,255)
         self.clock = pygame.time.Clock()
-        self.FPS = 60
+        self.FPS = 30
         self.display = pygame.display.set_mode([1024, 768]) #  768
         self.fantasma = Fantasma(50,50,10,[500,600])
         self.blocos = pygame.sprite.Group()
@@ -36,7 +36,7 @@ class Control():
         self.mapaa=Mapa()
         self.ultima_tecla=''
         self.movimento_inicial=False
-
+        self.vitoria=False
         self.menu_loop()
     def create_mapa(self):
         y=-30.3
@@ -49,7 +49,7 @@ class Control():
 
             for j in range(0,32):
                 if map[i][j] == "X":
-                    self.display.blit(pygame.transform.scale(pygame.image.load("D:\Python\Thonny\Scripts\Geistman\sprites\obloco.jpg"), (1024/32+10, 768/24+10)),(x,y))
+                    self.display.blit(pygame.transform.scale(pygame.image.load("D:\Python\Thonny\Scripts\Geistman\sprites\obloco.jpg").convert_alpha(), (1024/32+10, 768/24+10)),(x,y))
                     bloco = Bloco(x,y)
                     self.blocos.add(bloco) #testar
                     
@@ -69,9 +69,11 @@ class Control():
             self.spritesheet0=os.path.join(directory_images, "spritesheet.png")
             self.spritesheet1=os.path.join(directory_images, "spritesheetgeist.png")
             self.geistmanLogo=os.path.join(directory_images, "logo.png")
-            self.geistmanLogo=pygame.image.load(self.geistmanLogo)
+            self.geistmanLogo=pygame.image.load(self.geistmanLogo).convert_alpha()
+
             self.displayIcon=os.path.join(directory_images, "displayIcon.png")
-            self.displayIcon=pygame.image.load(self.displayIcon)
+            self.displayIcon=pygame.image.load(self.displayIcon).convert_alpha()
+
             pygame.display.set_icon(self.displayIcon)
 
             font0 = pygame.font.Font(self.FONT0, 40)
@@ -95,8 +97,10 @@ class Control():
     def testar_colisao(self):
         for x in self.inimigos:
             if pygame.Rect.colliderect(self.fantasma.rect,x.rect) == True and x.vulneravel==True:
-                x.kill()
-                self.inimigos.remove(x)
+                    x.kill()
+                    self.inimigos.remove(x)
+                    #self.vitoria=True
+                    
             elif pygame.Rect.colliderect(self.fantasma.rect,x.rect) == True and x.vulneravel==False:
                 
                 pygame.quit()
@@ -105,11 +109,8 @@ class Control():
         for y in self.particulas:
             if pygame.Rect.colliderect(self.fantasma.rect,y.rect) == True:
                 self.particulas.remove(y)
-                aleatorio=random.randrange(0,3)
+                aleatorio=random.randrange(0,len(self.inimigos))
                 self.inimigos[aleatorio].esta_vulneravel()#==True
-                #for i in self.inimigos:
-                 #   print (i.vulneravel)
-
 
 
         if pygame.sprite.spritecollideany(self.fantasma, self.blocos):
@@ -126,7 +127,7 @@ class Control():
         self.gameLoop = True 
 
         while self.gameLoop:
-            #clock
+        
             self.clock.tick(self.FPS)  
             self.display.fill((0, 0, 0))
 
@@ -135,12 +136,12 @@ class Control():
 
             #cria sprites de pacmans e do player
             for par in self.particulas:
-                par.desenhar()#funciona
+                par.desenhar()
             for pacmans in self.inimigos:
-                self.display.blit(pacmans.sprite,(pacmans.posInicial[0],pacmans.posInicial[1]))#funciona
-            self.display.blit(self.fantasma.sprite,(self.fantasma.posInicial[0],self.fantasma.posInicial[1]))#funciona
+                self.display.blit(pacmans.sprite,(pacmans.posInicial[0],pacmans.posInicial[1]))
+            self.display.blit(self.fantasma.sprite,(self.fantasma.posInicial[0],self.fantasma.posInicial[1]))
             #inicia movimento dos inimigos
-            if self.inimigo_saiu ==False:#funciona
+            if self.inimigo_saiu ==False:
                 for i in range(0,3):
                     self.inimigos[i].movCima()
                     if (i == 2 ):
@@ -150,14 +151,18 @@ class Control():
             if self.inimigo_saiu:
                 for i in self.inimigos:
                     i.colisao(self.blocos)
-                    #i.prox_movimento()
+                    
 
             self.testar_colisao()
+            if len(self.inimigos)==0:
+                self.gameLoop = False
+                self.tela_vitoria()
+
+            
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    gameLoop = False
-                    pygame.quit()
+                    self.gameLoop = False
                 if pygame.key.get_pressed()[pygame.K_d]:
                     self.fantasma.movDireita()
                     self.ultima_tecla='d'
@@ -168,14 +173,24 @@ class Control():
                 elif pygame.key.get_pressed()[pygame.K_w]:
                     self.fantasma.movCima()
                     self.ultima_tecla='w'
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
+                elif pygame.key.get_pressed()[pygame.K_s]:
 
-                        self.fantasma.movBaixo()
-                        self.ultima_tecla='s'
+                    self.fantasma.movBaixo()
+                    self.ultima_tecla='s'
 
             pygame.display.flip()
+    def tela_vitoria(self):
+        vitoria=True
+        print('chegou')
+        while vitoria:
+            self.display.fill((0,0,0))
+            self.clock.tick(self.FPS)  
+            imagem=pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\youwin.png')
 
-
+            self.display.blit(imagem,(275, 100))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    vitoria = False
+            pygame.display.flip()
 x=Control()
 

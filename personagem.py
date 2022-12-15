@@ -8,12 +8,15 @@ class Personagem(ABC,pygame.sprite.Sprite):
         self.largura=largura
         self.velocidade=velocidade
         self.posInicial=posInicial
-        colisao=False
+    @abstractmethod
     def movEsquerda():
         pass
+    @abstractmethod
     def movDireita():
         pass
+    @abstractmethod
     def movCima():
         pass
+    @abstractmethod
     def movBaixo():
         pass

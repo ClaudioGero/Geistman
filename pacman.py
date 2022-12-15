@@ -25,7 +25,7 @@ class Pacman(Personagem,pygame.sprite.Sprite):
         if self.vulneravel==False:
             self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanLeft.png'), (1024/32+10, 768/24+10))
         elif self.vulneravel==True:
-            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\inimigo.png'), (1024/32+10, 768/24+10))
+            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanLeftVul.png'), (1024/32+10, 768/24+10))
 
         self.update()
     def movDireita(self):
@@ -34,7 +34,7 @@ class Pacman(Personagem,pygame.sprite.Sprite):
         if self.vulneravel==False:
             self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanRight.png'), (1024/32+10, 768/24+10))
         elif self.vulneravel==True:
-            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\inimigo.png'), (1024/32+10, 768/24+10))
+            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanRightVul.png'), (1024/32+10, 768/24+10))
         self.update()
 
     def movCima(self):
@@ -43,7 +43,7 @@ class Pacman(Personagem,pygame.sprite.Sprite):
         if self.vulneravel==False:
             self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanUp.png'), (1024/32+10, 768/24+10))
         elif self.vulneravel==True:
-            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\inimigo.png'), (1024/32+10, 768/24+10))
+            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanUpVul.png'), (1024/32+10, 768/24+10))
         self.update()
     def movBaixo(self):
         self.posInicial[1]+=self.velocidade
@@ -51,7 +51,7 @@ class Pacman(Personagem,pygame.sprite.Sprite):
         if self.vulneravel==False:
             self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanDown.png'), (1024/32+10, 768/24+10))
         elif self.vulneravel==True:
-            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\inimigo.png'), (1024/32+10, 768/24+10))
+            self.sprite = pygame.transform.scale(pygame.image.load('D:\Python\Thonny\Scripts\Geistman\sprites\pacmanDownVul.png'), (1024/32+10, 768/24+10))
         self.update()
 
     def update(self):
